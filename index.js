@@ -1,65 +1,27 @@
-// const express = require("express");
 
-// const app = express();
+const http = require("http");
 
-// app.get("/", (req, res)  => {
-//     res.send("College Management System API")
-// });
+const server = http.createServer((req, res) => {
 
-// app.listen(3000, () => {
-//     console.log("server running on   http://localhost:3000");
-
-// });
-
-
-// const { add, subtract } = require("./math");
-
-// console.log(add(10, 5));
-// console.log(subtract(10, 5));
-
-
-// const fs = require("fs");
-
-// fs.writeFile("hello.txt", "Hello Node.js", (err) => {
-//     if (err) {
-//         console.log(err);
-//         return;
-//     }
-
-//     console.log("File created successfully");
-// });
-
-
-
-
-// const fs = require("fs");
-
-// fs.unlink("hello.txt", (err) => {
-//     if (err) {
-//         console.log(err);
-//         return;
-//     }
-
-//     console.log("File deleted");
-// });
-
-
-const fs = require("fs");
-
-fs.writeFile("student.txt", "My name is Yasmeen", (err) => {
-    if (err) {
-        console.log(err);
-        return;
+    if (req.url === "/") {
+        res.end("Welcome to Home Page");
     }
 
-    console.log("Student file created");
+    else if (req.url === "/about") {
+        res.end("Welcome to About Page");
+    }
 
-    fs.readFile("student.txt", "utf8", (err, data) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
+    else if (req.url === "/contact") {
+        res.end("Welcome to Contact Page");
+    }
 
-        console.log(data);
-    });
+    else {
+        res.statusCode = 404;
+        res.end("Page Not Found");
+    }
+
+});
+
+server.listen(3000, () => {
+    console.log("Server running on port 3000");
 });
