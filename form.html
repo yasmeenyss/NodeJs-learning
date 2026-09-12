@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Node.js User Registration</title>
+</head>
+
+<body>
+
+    <h1>User Registration</h1>
+
+    <label>Username:</label>
+    <input type="text" id="username" placeholder="Enter username">
+
+    <br><br>
+
+    <label>Email:</label>
+    <input type="email" id="email" placeholder="Enter email">
+
+    <br><br>
+
+    <button onclick="registerUser()">Register User</button>
+
+    <script>
+        async function registerUser() {
+
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+
+            const user = {
+                username: username,
+                email: email
+            };
+
+            try {
+
+                const response = await fetch("http://localhost:3000/users", {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(user)
+                });
+
+                const data = await response.json();
+
+                console.log(data);
+
+                alert(data.message);
+
+            } catch (error) {
+
+                console.log("Error:", error);
+                alert("Something went wrong");
+            }
+        }
+    </script>
+
+</body>
+</html>
+
