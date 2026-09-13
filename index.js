@@ -1,40 +1,91 @@
-
-
 const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
 
+
+// ===============================
+// MongoDB Connection
+// ===============================
+
+mongoose
+    .connect("mongodb://127.0.0.1:27017/CollegeManagement")
+    .then(() => {
+        console.log("MongoDB connected successfully");
+    })
+    .catch((error) => {
+        console.log("MongoDB connection failed:", error.message);
+    });
+
+
+// ===============================
 // Middleware
+// ===============================
+
+// JSON data read karne ke liye
 app.use(express.json());
 
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-    if (req.method === "OPTIONS") {
-        return res.sendStatus(204);
-    }
+// Logging Middleware
+
+app.use((req, res, next) => {
+
+    console.log(
+        `${req.method} ${req.url} - ${new Date().toLocaleTimeString()}`
+    );
 
     next();
 });
 
-// GET route
+
+// ===============================
+// Home Route
+// ===============================
+
 app.get("/", (req, res) => {
-    res.send("Welcome to Home Page");
+
+    res.send("Welcome to College Management System API");
+
 });
 
-// POST route
-app.post("/users", (req, res) => {
 
-    console.log("Received User:", req.body);
+// ===============================
+// User Routes
+// ===============================
 
-    res.status(201).json({
-        message: "User created successfully",
-        user: req.body
+const userRoutes = require("./routes/userRoutes");
+
+app.use("/users", userRoutes);
+
+
+// ===============================
+// Student Routes
+// ===============================
+
+const studentRoutes = require("./routes/studentRoutes");
+
+app.use("/students", studentRoutes);
+
+
+// ===============================
+// 404 Middleware
+// ===============================
+
+app.use((req, res) => {
+
+    res.status(404).json({
+        message: "Route not found"
     });
+
 });
+
+
+// ===============================
+// Server
+// ===============================
 
 app.listen(3000, () => {
+
     console.log("Express server running on port 3000");
+
 });
