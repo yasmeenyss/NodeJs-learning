@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -9,7 +10,7 @@ const app = express();
 // ===============================
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/CollegeManagement")
+    .connect(process.env.MONGO_URI)
     .then(() => {
         console.log("MongoDB connected successfully");
     })
@@ -68,6 +69,15 @@ app.use("/students", studentRoutes);
 
 
 // ===============================
+// Authentication Routes
+// ===============================
+
+const authRoutes = require("./routes/authRoutes");
+
+app.use("/auth", authRoutes);
+
+
+// ===============================
 // 404 Middleware
 // ===============================
 
@@ -84,8 +94,7 @@ app.use((req, res) => {
 // Server
 // ===============================
 
-app.listen(3000, () => {
-
+app.listen(process.env.PORT, () => {
     console.log("Express server running on port 3000");
 
 });
