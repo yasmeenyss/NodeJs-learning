@@ -1,19 +1,12 @@
-
-
 require("dotenv").config();
 
-const errorMiddleware = require("./middleware/errorMiddleware");
-const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
 
-
-// ===============================
-// MongoDB Connection
-// ===============================
-
+// MongoDB Atlas connection
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {
@@ -23,95 +16,49 @@ mongoose
         console.log("MongoDB connection failed:", error.message);
     });
 
-
-// ===============================
 // Middleware
-// ===============================
-
-// JSON data read karne ke liye
-
 app.use(cors());
 app.use(express.json());
 
-
-// Logging Middleware
-
+// Logging middleware
 app.use((req, res, next) => {
-
     console.log(
         `${req.method} ${req.url} - ${new Date().toLocaleTimeString()}`
     );
-
     next();
 });
 
-
-// ===============================
-// Home Route
-// ===============================
-
+// Home route
 app.get("/", (req, res) => {
-
     res.send("Welcome to College Management System API");
-
 });
 
-app.get("/test-error", (req, res, next) => {
-
-    const error = new Error("This is a test error");
-
-    error.statusCode = 400;
-
-    next(error);
-
-});
-
-
-// ===============================
-// User Routes
-// ===============================
-
+// User routes
 const userRoutes = require("./routes/userRoutes");
-
 app.use("/users", userRoutes);
 
-
-// ===============================
-// Student Routes
-// ===============================
-
+// Student routes
 const studentRoutes = require("./routes/studentRoutes");
-
 app.use("/students", studentRoutes);
 
-
-// ===============================
-// Authentication Routes
-// ===============================
-
+// Authentication routes
 const authRoutes = require("./routes/authRoutes");
-
 app.use("/auth", authRoutes);
-app.use(errorMiddleware);
 
-// ===============================
-// 404 Middleware
-// ===============================
-
+// 404 Route
 app.use((req, res) => {
-
     res.status(404).json({
         message: "Route not found"
     });
-
 });
 
+// Error handling middleware
+const errorMiddleware = require("./middleware/errorMiddleware");
+app.use(errorMiddleware);
 
-// ===============================
 // Server
-// ===============================
+const PORT = process.env.PORT || 3000;
 
-app.listen(process.env.PORT, () => {
-    console.log("Express server running on port 3000");
-
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Express server running on port ${PORT}`);
 });
