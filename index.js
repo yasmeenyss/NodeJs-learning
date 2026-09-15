@@ -1,4 +1,9 @@
+
+
 require("dotenv").config();
+
+const errorMiddleware = require("./middleware/errorMiddleware");
+const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -24,6 +29,8 @@ mongoose
 // ===============================
 
 // JSON data read karne ke liye
+
+app.use(cors());
 app.use(express.json());
 
 
@@ -46,6 +53,16 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
 
     res.send("Welcome to College Management System API");
+
+});
+
+app.get("/test-error", (req, res, next) => {
+
+    const error = new Error("This is a test error");
+
+    error.statusCode = 400;
+
+    next(error);
 
 });
 
@@ -75,7 +92,7 @@ app.use("/students", studentRoutes);
 const authRoutes = require("./routes/authRoutes");
 
 app.use("/auth", authRoutes);
-
+app.use(errorMiddleware);
 
 // ===============================
 // 404 Middleware

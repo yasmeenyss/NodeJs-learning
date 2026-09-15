@@ -17,6 +17,7 @@ const authMiddleware = (req, res, next) => {
             });
 
         }
+          
 
 
         // Bearer token
@@ -44,6 +45,7 @@ const authMiddleware = (req, res, next) => {
         // Store user information
 
         req.user = decoded;
+
 
 
         next();

@@ -26,6 +26,7 @@ const registerUser = async (req, res) => {
 
         }
 
+    
 
         // Hash password
 
