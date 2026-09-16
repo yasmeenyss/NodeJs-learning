@@ -41,6 +41,17 @@ app.use("/users", userRoutes);
 const studentRoutes = require("./routes/studentRoutes");
 app.use("/students", studentRoutes);
 
+// Teacher routes
+const teacherRoutes = require("./routes/teacherRoutes");
+app.use("/teachers", teacherRoutes);
+
+
+
+// Course routes
+const courseRoutes = require("./routes/courseRoutes");
+app.use("/courses", courseRoutes);
+
+
 // Authentication routes
 const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
