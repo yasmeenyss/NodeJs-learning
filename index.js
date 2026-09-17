@@ -52,9 +52,28 @@ const courseRoutes = require("./routes/courseRoutes");
 app.use("/courses", courseRoutes);
 
 
+// Attendance routes
+const attendanceRoutes = require("./routes/attendanceRoutes");
+app.use("/attendance", attendanceRoutes);
+
+// Marks routes
+const marksRoutes = require("./routes/marksRoutes");
+app.use("/marks", marksRoutes);
+
+// Notice routes
+const noticeRoutes = require("./routes/noticeRoutes");
+app.use("/notices", noticeRoutes);
+
+
+// Dashboard routes
+const dashboardRoutes = require("./routes/dashboardRoutes");
+app.use("/dashboard", dashboardRoutes);
+
+
 // Authentication routes
 const authRoutes = require("./routes/authRoutes");
 app.use("/auth", authRoutes);
+
 
 // 404 Route
 app.use((req, res) => {
